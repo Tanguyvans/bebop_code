@@ -48,6 +48,8 @@ def Bounding_Callback(msg):
     x_middle_frame = colWindow/2
     y_middle_frame = rowWindow/2
 
+    y_good_heigh_frame = rowWindow*0.35
+
     for box in msg.bounding_boxes:
         if (box.Class == "person"):
             #rospy.loginfo(box.Class)
@@ -64,9 +66,14 @@ def Bounding_Callback(msg):
             x_difference = width - width0
             y_difference = height - height0
 
-            # milieu 
+            # milieu en fonction de x
             x_middle_person = (box.xmax +box.xmin )/2
             x_rot_difference = x_middle_frame - x_middle_person
+
+            #calcul en fonction de Z
+            z_difference = (box.ymin-y_good_heigh_frame)
+            
+
 
             #initialise pub et msg
             velocity_publisher = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=1)
@@ -75,7 +82,7 @@ def Bounding_Callback(msg):
             # deplacement selon X
             if ((abs(y_difference)-10) > 0):
                 x_speed = round(y_difference*0.001, 1)
-                print(x_speed)
+                #print(x_speed)
                 velocity_message.linear.x = x_speed
             else:
                 velocity_message.linear.x = 0
@@ -87,6 +94,14 @@ def Bounding_Callback(msg):
             else: 
                 velocity_message.angular.z = 0
 
+            # hauteur du drone 
+            if (abs(z_difference)-10 > 0):
+                z_speed = round(z_difference*0.001,1)
+                print("Z",-z_speed)
+                velocity_message.linear.z = -z_speed
+            else:
+                velocity_message.linear.z = 0
+
             velocity_publisher.publish(velocity_message)
             
 
@@ -96,23 +111,6 @@ def takeoff():
     pub = rospy.Publisher('/bebop/takeoff', Empty, queue_size=1, latch=True)
     pub.publish(Empty())
     time.sleep(2.)
-
-def moveX(Verif, value):  
-    depl = round(value*0.001, 1)    
-    print(depl)
-    velocity_publisher = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=1)
-    velocity_message = Twist()
-    if (Verif == 'avance'):
-        rospy.loginfo("Il faut avancer")
-        velocity_message.linear.x = depl
-    elif (Verif == 'stop'): 
-        rospy.loginfo("tu es bien")
-        velocity_message.linear.x = 0
-    elif (Verif == 'recule'):
-        rospy.loginfo("Il faut reculer")
-        velocity_message.linear.x = depl
-
-    velocity_publisher.publish(velocity_message)
 
 def moveZ(speed, distance, is_forward):
         
@@ -142,19 +140,6 @@ def moveZ(speed, distance, is_forward):
 
     
     velocity_publisher.publish(velocity_message)
-
-def rotate (value):
-    depl = round(value*0.001, 1)
-    print(depl)
-
-    velocity_publisher = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=1)
-    velocity_message = Twist()
-    velocity_message.angular.z = depl
-
-    
-
-    #velocity_publisher.publish(velocity_message)
-
 
 if __name__ == '__main__':
     try:
