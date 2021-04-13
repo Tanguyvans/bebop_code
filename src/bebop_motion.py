@@ -55,7 +55,7 @@ def moveX(speed, distance, is_forward):
             rospy.loginfo("bebop moves forwards")
             velocity_publisher.publish(velocity_message)
             loop_rate.sleep()    
-            distance_moved = abs(0.5 * math.sqrt(((x-x0) ** 2) + ((y-y0) ** 2)))
+            distance_moved = abs(math.sqrt(((x-x0) ** 2) + ((y-y0) ** 2)))
             print  distance_moved               
             if  not (distance_moved<distance):
                 rospy.loginfo("reached")
@@ -85,7 +85,7 @@ def moveY(speed, distance, is_forward):
             rospy.loginfo("bebop moves forwards")
             velocity_publisher.publish(velocity_message)
             loop_rate.sleep()    
-            distance_moved = abs(0.5 * math.sqrt(((x-x0) ** 2) + ((y-y0) ** 2)))
+            distance_moved = abs(math.sqrt(((x-x0) ** 2) + ((y-y0) ** 2)))
             print  distance_moved               
             if  not (distance_moved<distance):
                 rospy.loginfo("reached")
@@ -114,7 +114,7 @@ def moveZ(speed, distance, is_forward):
             rospy.loginfo("bebop moves forwards")
             velocity_publisher.publish(velocity_message)
             loop_rate.sleep()    
-            distance_moved = abs(0.5 * math.sqrt((z-z0) ** 2))
+            distance_moved = abs(math.sqrt((z-z0) ** 2))
             print  distance_moved               
             if  not (distance_moved<distance):
                 rospy.loginfo("reached")
