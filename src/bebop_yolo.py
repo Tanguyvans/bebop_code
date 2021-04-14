@@ -52,8 +52,6 @@ def Bounding_Callback(msg):
 
     for box in msg.bounding_boxes:
         if (box.Class == "person"):
-            #rospy.loginfo(box.Class)
-            #rospy.loginfo("Xmin {} Xmax {} Ymin {} Ymax {}".format(box.xmin, box.xmax, box.ymin, box.ymax))
 
             width0 = box.xmax-box.xmin
             height0 = box.ymax-box.ymin
