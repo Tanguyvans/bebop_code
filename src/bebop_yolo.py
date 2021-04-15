@@ -48,7 +48,7 @@ def Bounding_Callback(msg):
     x_middle_frame = colWindow/2
     y_middle_frame = rowWindow/2
 
-    y_good_heigh_frame = rowWindow*0.35
+    y_good_height_frame = rowWindow*0.35
 
     for box in msg.bounding_boxes:
         if (box.Class == "person"):
@@ -69,7 +69,7 @@ def Bounding_Callback(msg):
             x_rot_difference = x_middle_frame - x_middle_person
 
             #calcul en fonction de Z
-            z_difference = (box.ymin-y_good_heigh_frame)
+            z_difference = (box.ymin-y_good_height_frame)
             
 
 
