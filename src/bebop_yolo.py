@@ -66,9 +66,7 @@ def Bounding_Callback(msg):
     # On recupere l'ensemble des personnes avec leurs positions 
     for box in msg.bounding_boxes:
         if (box.Class == "person"):
-            #rospy.loginfo(box.Class)
-            #rospy.loginfo("Xmin {} Xmax {} Ymin {} Ymax {}".format(box.xmin, box.xmax, box.ymin, box.ymax))
-
+            
             listPosition.append(box.xmax) 
             listPosition.append(box.xmin) 
             listPosition.append(box.ymax)
