@@ -16,9 +16,12 @@ z = 0
 from Tkinter import *
 import threading 
 import bebop_control
+import bebop_tracking
  
 window= Tk()
 window.config(background= "#41B77F")
+
+global image_tracking
 
     
 def fleches_background():
@@ -43,8 +46,13 @@ def droite_background():
     t = threading.Thread(target= bebop_control.moveY(0.1, 1.0, False))
     t.start()
 def tracking_background():
-    t = threading.Thread(target= '')
+    t = threading.Thread(target= bebop_tracking.tracking('person'))
     t.start()
+
+def stop_tracking_background():
+    t = threading.Thread(target= bebop_tracking.stop_tracking())
+    t.start()
+
 def camera_background():
     t = threading.Thread(target= 'c')
     t.start()
@@ -80,15 +88,22 @@ if __name__ == '__main__':
 
         take_off_button = Button(window, text="Take-OFF", height= "3", width="20",command = takeoff_background).place(x=30,y=100)
         land_button= Button(window, text="Land", height= "3", width="20",command= land_background).place(x=30,y=300)
+        
         avancer_button = Button(window, text="Avancer", height= "3", width="20",command = avancer_background).place(x=450,y=150)
         reculer_button= Button(window, text="Reculer", height= "3", width="20", command = reculer_background).place(x=450,y=350)
         gauche_button= Button(window, text="Gauche", height= "3", width="20", command= gauche_background).place(x=350,y=250)
         droite_button = Button(window, text="Droite", height= "3", width="20", command = droite_background).place(x=550,y=250)
-        fleches_button = Button(window, text="Detection de fleches", height= "3", width="20",command= fleches_background).place(x=800,y=100)
-        tracking_button = Button(window, text="Tracking", height= "3", width="20", command = tracking_background).place(x=800,y=300)
-        camera_button = Button(window, text= "Camera du drone", height = "3", width= "20", command = camera_background).place(x=30, y= 450)
         monter_button = Button(window, text= "Monter", height="3", width="20", command= monter_background).place(x = 450, y = 450)
         descendre_button = Button(window, text= "Descendre", height="3", width= "20", command= descendre_background).place(x= 450, y =520)
+
+        fleches_button = Button(window, text="Detection de fleches", height= "3", width="20",command= fleches_background).place(x=800,y=100)
+        tracking_button = Button(window, text="Tracking", height= "3", width="20", command = tracking_background).place(x=800,y=300)
+        stop_tracking_button = Button(window, text="Stop Tracking", height= "3", width="20", command = stop_tracking_background).place(x=800,y=380)
+        
+
+
+        camera_button = Button(window, text= "Camera du drone", height = "3", width= "20", command = camera_background).place(x=30, y= 450)
+        
         rotationgauche_button= Button(window, text= "Rotation gauche", height="3", width= "20", command= rotationgauche_background).place(x=800, y=450)
         rotationdroite_button = Button(window, text = "Rotation droite", height="3", width= "20", command= rotationdroite_background).place(x=800,y=520)
         
