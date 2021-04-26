@@ -14,6 +14,7 @@ y = 0
 z = 0
 
 from Tkinter import *
+from tkinter import ttk
 import threading 
 import bebop_control
 import bebop_tracking
@@ -22,6 +23,20 @@ window= Tk()
 window.config(background= "#41B77F")
 
 global image_tracking
+
+#get la distance sélectionné dans la combobox
+def getdistance():
+    distance = float(distance_choisie.get())
+    return distance
+#get la vitesse sélectionnée dans la combobox
+def getvitesse():
+    vitesse = float(vitesse_choisie.get())
+    return vitesse
+
+#get l'objet choisi sélectionné pour le tracking
+def getobjet():
+    objet =objet_choisi.get()
+    return objet
 
     
 def fleches_background():
@@ -34,19 +49,28 @@ def land_background():
     t = threading.Thread(target= bebop_control.land())
     t.start()
 def avancer_background():
-    t = threading.Thread(target= bebop_control.moveX(0.1, 1.0, True))
+    vitesse= getvitesse()
+    distance=getdistance()
+    t = threading.Thread(target= bebop_control.moveX(vitesse, distance, True))
     t.start()
 def reculer_background():
-    t = threading.Thread(target= bebop_control.moveX(0.1, 1.0, False))
+    vitesse= getvitesse()
+    distance=getdistance()
+    t = threading.Thread(target= bebop_control.moveX(vitesse, distance, False))
     t.start()
 def gauche_background():
-    t = threading.Thread(target= bebop_control.moveY(0.1, 1.0, True))
+    vitesse= getvitesse()
+    distance=getdistance()
+    t = threading.Thread(target= bebop_control.moveY(vitesse, distance, True))
     t.start()
 def droite_background():
-    t = threading.Thread(target= bebop_control.moveY(0.1, 1.0, False))
+    vitesse= getvitesse()
+    distance=getdistance()
+    t = threading.Thread(target= bebop_control.moveY(vitesse, distance, False))
     t.start()
 def tracking_background():
-    t = threading.Thread(target= bebop_tracking.tracking('person'))
+    objet= getobjet()
+    t = threading.Thread(target= bebop_tracking.tracking(objet))
     t.start()
 
 def stop_tracking_background():
@@ -57,10 +81,14 @@ def camera_background():
     t = threading.Thread(target= 'c')
     t.start()
 def monter_background():
-    t = threading.Thread(target= bebop_control.moveZ(0.1, 0.5, True))
+    vitesse= getvitesse()
+    distance=getdistance()
+    t = threading.Thread(target= bebop_control.moveZ(vitesse, distance, True))
     t.start()
 def descendre_background():
-    t = threading.Thread(target= bebop_control.moveZ(0.1, 1.0, False))
+    vitesse= getvitesse()
+    distance=getdistance()
+    t = threading.Thread(target= bebop_control.moveZ(vitesse, distance, False))
     t.start()
 def rotationgauche_background():
     t = threading.Thread(target= 'rg')
@@ -86,6 +114,32 @@ if __name__ == '__main__':
         window.geometry("1080x600")
         window.minsize(1000,500)
 
+        #choix de la vitesse et de la distance par l'utilisateur
+        vitesse_label= Label(window,text = "Vitesse").place(x= 30,y=50)
+        distance_label= Label(window, text= "Distance").place(x=230,y=50)
+        
+        #combobox distance
+        distance_var= StringVar()
+        distance_choisie= ttk.Combobox(window, width=20,textvariable=distance_var)
+        distance_choisie['values']=('1','2','3','5')
+        distance_choisie.place(x=80,y=50)
+        distance_choisie.current(0)
+        
+        #combobox vitesse
+        vitesse_var= StringVar()
+        vitesse_choisie= ttk.Combobox(window, width=20,textvariable=vitesse_var)
+        vitesse_choisie['values']=('0.1','0.2','0.3','0.5')
+        vitesse_choisie.place(x=300,y=50)
+        vitesse_choisie.current(0)
+        
+        #combobox tracking
+        objet_label= Label(window, text= "Objet traqué",width=20).place(x=800,y=220)
+        objet_var= StringVar()
+        objet_choisi= ttk.Combobox(window, width=21,textvariable=objet_var)
+        objet_choisi['values']=('person','car','dog')
+        objet_choisi.place(x=800,y=250)
+        objet_choisi.current(0)
+        
         take_off_button = Button(window, text="Take-OFF", height= "3", width="20",command = takeoff_background).place(x=30,y=100)
         land_button= Button(window, text="Land", height= "3", width="20",command= land_background).place(x=30,y=300)
         
