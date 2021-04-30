@@ -14,34 +14,39 @@ y = 0
 z = 0
 
 from Tkinter import *
-from tkinter import ttk
+import ttk
 import threading 
 import bebop_control
 import bebop_tracking
+import bebop_arrow
  
 window= Tk()
 window.config(background= "#41B77F")
 
 global image_tracking
+global arrow_sub
 
-#get la distance sélectionné dans la combobox
 def getdistance():
     distance = float(distance_choisie.get())
     return distance
-#get la vitesse sélectionnée dans la combobox
+
 def getvitesse():
     vitesse = float(vitesse_choisie.get())
     return vitesse
 
-#get l'objet choisi sélectionné pour le tracking
 def getobjet():
     objet =objet_choisi.get()
     return objet
 
     
 def fleches_background():
-    t = threading.Thread(target= 'y a r')
+    t = threading.Thread(target= bebop_arrow.arrow())
     t.start()
+def stop_fleches_background():
+    t = threading.Thread(target= bebop_arrow.stop_arrow())
+    t.start()
+
+
 def takeoff_background():
     t = threading.Thread(target= bebop_control.takeoff())
     t.start()
@@ -118,22 +123,18 @@ if __name__ == '__main__':
         vitesse_label= Label(window,text = "Vitesse").place(x= 30,y=50)
         distance_label= Label(window, text= "Distance").place(x=230,y=50)
         
-        #combobox distance
         distance_var= StringVar()
         distance_choisie= ttk.Combobox(window, width=20,textvariable=distance_var)
         distance_choisie['values']=('1','2','3','5')
         distance_choisie.place(x=80,y=50)
         distance_choisie.current(0)
         
-        #combobox vitesse
         vitesse_var= StringVar()
         vitesse_choisie= ttk.Combobox(window, width=20,textvariable=vitesse_var)
         vitesse_choisie['values']=('0.1','0.2','0.3','0.5')
         vitesse_choisie.place(x=300,y=50)
         vitesse_choisie.current(0)
         
-        #combobox tracking
-        objet_label= Label(window, text= "Objet traqué",width=20).place(x=800,y=220)
         objet_var= StringVar()
         objet_choisi= ttk.Combobox(window, width=21,textvariable=objet_var)
         objet_choisi['values']=('person','car','dog')
@@ -141,7 +142,7 @@ if __name__ == '__main__':
         objet_choisi.current(0)
         
         take_off_button = Button(window, text="Take-OFF", height= "3", width="20",command = takeoff_background).place(x=30,y=100)
-        land_button= Button(window, text="Land", height= "3", width="20",command= land_background).place(x=30,y=300)
+        land_button= Button(window, text="Land", height= "3", width="20",command= land_background).place(x=30,y=150)
         
         avancer_button = Button(window, text="Avancer", height= "3", width="20",command = avancer_background).place(x=450,y=150)
         reculer_button= Button(window, text="Reculer", height= "3", width="20", command = reculer_background).place(x=450,y=350)
@@ -150,13 +151,15 @@ if __name__ == '__main__':
         monter_button = Button(window, text= "Monter", height="3", width="20", command= monter_background).place(x = 450, y = 450)
         descendre_button = Button(window, text= "Descendre", height="3", width= "20", command= descendre_background).place(x= 450, y =520)
 
-        fleches_button = Button(window, text="Detection de fleches", height= "3", width="20",command= fleches_background).place(x=800,y=100)
+        fleches_button = Button(window, text="Detection de fleches", height= "3", width="20",command= fleches_background).place(x=800,y=70)
+        stop_fleches_button = Button(window, text="Stop fleches", height= "3", width="20",command= stop_fleches_background).place(x=800,y=140)
+        
+        
+        
         tracking_button = Button(window, text="Tracking", height= "3", width="20", command = tracking_background).place(x=800,y=300)
         stop_tracking_button = Button(window, text="Stop Tracking", height= "3", width="20", command = stop_tracking_background).place(x=800,y=380)
         
-
-
-        camera_button = Button(window, text= "Camera du drone", height = "3", width= "20", command = camera_background).place(x=30, y= 450)
+        camera_button = Button(window, text= "Camera du drone", height = "3", width= "20", command = camera_background).place(x=30, y= 200)
         
         rotationgauche_button= Button(window, text= "Rotation gauche", height="3", width= "20", command= rotationgauche_background).place(x=800, y=450)
         rotationdroite_button = Button(window, text = "Rotation droite", height="3", width= "20", command= rotationdroite_background).place(x=800,y=520)
