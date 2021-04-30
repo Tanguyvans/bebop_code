@@ -25,6 +25,7 @@ window.config(background= "#41B77F")
 
 global image_tracking
 global arrow_sub
+global record_sub
 
 def getdistance():
     distance = float(distance_choisie.get())
@@ -83,8 +84,17 @@ def stop_tracking_background():
     t.start()
 
 def camera_background():
-    t = threading.Thread(target= 'c')
+    t = threading.Thread(target= bebop_control.record())
     t.start()
+def stop_camera_background():
+    t = threading.Thread(target= bebop_control.stop_record())
+    t.start()
+
+def move_background():
+    t = threading.Thread(target= bebop_control.home())
+    t.start()
+
+
 def monter_background():
     vitesse= getvitesse()
     distance=getdistance()
@@ -159,7 +169,10 @@ if __name__ == '__main__':
         tracking_button = Button(window, text="Tracking", height= "3", width="20", command = tracking_background).place(x=800,y=300)
         stop_tracking_button = Button(window, text="Stop Tracking", height= "3", width="20", command = stop_tracking_background).place(x=800,y=380)
         
-        camera_button = Button(window, text= "Camera du drone", height = "3", width= "20", command = camera_background).place(x=30, y= 200)
+        camera_button = Button(window, text= "Démarrer enregistrement", height = "3", width= "20", command = camera_background).place(x=30, y= 200)
+        stop_camera_button = Button(window, text= "Stop enregistrement", height = "3", width= "20", command = stop_camera_background).place(x=30, y= 250)
+        move_button = Button(window, text= "BASE", height = "3", width= "20", command = stop_camera_background).place(x=30, y= 300)
+        
         
         rotationgauche_button= Button(window, text= "Rotation gauche", height="3", width= "20", command= rotationgauche_background).place(x=800, y=450)
         rotationdroite_button = Button(window, text = "Rotation droite", height="3", width= "20", command= rotationdroite_background).place(x=800,y=520)
