@@ -4,10 +4,12 @@ import rospy
 import math
 import time
 import sys 
+import cv2
 
 from std_msgs.msg import Empty
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+from sensor_msgs.msg import Image
 
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -131,9 +133,9 @@ def moveZ(speed, distance, is_forward):
     velocity_message.linear.z =0
     velocity_publisher.publish(velocity_message)
 
-def rotate2 (angular_speed_degree, relative_angle_degree, clockwise):
+def rotate (angular_speed_degree, relative_angle_degree, clockwise):
     
-    velocity_publisher = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=1)
+    velocity_publisher = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=0)
     velocity_message = Twist()
     angular_speed=math.radians(abs(angular_speed_degree))
 
@@ -154,38 +156,6 @@ def rotate2 (angular_speed_degree, relative_angle_degree, clockwise):
         loop_rate.sleep()
 
         if  (current_angle_degree>relative_angle_degree):
-            rospy.loginfo("reached")
-            break
-
-    velocity_message.angular.z =0
-    velocity_publisher.publish(velocity_message)
-
-def rotate (angular_speed_degree, relative_angle_degree, clockwise):
-    
-    velocity_publisher = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=1)
-    velocity_message = Twist()
-
-    angular_speed=math.radians(abs(angular_speed_degree))
-    relative_angle = math.radians(relative_angle_degree)
-
-    global yaw
-    yaw0 = yaw
-
-    if (clockwise):
-        velocity_message.angular.z =-abs(angular_speed)
-    else:
-        velocity_message.angular.z =abs(angular_speed)
-
-    rotation_moved = 0.0
-    loop_rate = rospy.Rate(10) 
-
-    while True :
-        rospy.loginfo("bebop rotates")
-        velocity_publisher.publish(velocity_message)
-        loop_rate.sleep()
-        rotation_moved = yaw-yaw0
-
-        if  not (rotation_moved < relative_angle):
             rospy.loginfo("reached")
             break
 
@@ -233,10 +203,10 @@ def home():
     if (x !=0 and y != 0):
         relative_angle = desired_angle - yaw
 
-        rotate(0.1, relative_angle, True)
+        rotate(10, relative_angle, True)
         time.sleep(2)
         moveX(0.1, desired_distance, True)
-
+        land()
 
 def record_callback(ros_image):
     #print('Processing frame / Delay:%6.3f' % (rospy.Time.now() - ros_image.header.stamp).to_sec())
@@ -248,9 +218,6 @@ def record_callback(ros_image):
         print(e)
     #from now on, you can work exactly like with opencv
     (rows, cols, channels) = cv_image.shape
-    writer= cv2.VideoWriter('basicvideo.mp4', cv2.VideoWriter_fourcc(*'MP4V'), 20, (width,height))
-
-    writer.write(cv_image)
     cv2.imshow('frame', cv_image)
 
 def stop_record():
