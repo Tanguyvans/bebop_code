@@ -53,22 +53,22 @@ def land():
 
 #déplacement selon X
 def moveX(speed, distance, is_forward):
-    # recupere la distance a parcourir
-    # la viesse de deplacement
+    # recupère la distance a parcourir
+    # la vitesse de deplacement
     # le sens de deplacement
     
-    # cree le publisher permettant d envoyer les commandes aux drones
+    # cree le publisher permettant d'envoyer les commandes au drone
     velocity_publisher = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=1)
-    # le publisher a besion d un message de type twist 
+    # le publisher a besoin d'un message de type twist 
     velocity_message = Twist()
 
-    # on recupere et definit comme globale les variable de position
+    # on recupere et definit comme globale les variables de position
     global x, y
-    # ces variables servirons pour retenir la position initiale 
+    # ces variables serviront pour retenir la position initiale 
     x0=x
     y0=y
 
-    # regarde si la le drone va vers l avant ou l arriere 
+    # regarde si le drone va vers l'avant ou l'arriere 
     # sert uniquement comme securite
     if (is_forward):
         velocity_message.linear.x =abs(speed)
@@ -76,7 +76,7 @@ def moveX(speed, distance, is_forward):
     	velocity_message.linear.x =-abs(speed)
 
     # initialise la variable distance moved 
-    # cette variable permet de stocker la distance parcoure par le drone
+    # cette variable permet de stocker la distance parcourue par le drone
     distance_moved = 0.0
     loop_rate = rospy.Rate(10) # we publish the velocity at 10 Hz (10 times a second)    
     #tant qu'on n'a pas atteint la distance voulue, on boucle
@@ -176,7 +176,7 @@ def rotate (angular_speed_degree, relative_angle_degree, clockwise):
     # converti la vitesse angualaire degree --> radians
     angular_speed=math.radians(abs(angular_speed_degree))
 
-    # securite pour s assurer que le drone troune dans le sens voulu
+    # securite pour s assurer que le drone tourne dans le sens voulu
     if (clockwise):
         velocity_message.angular.z =-abs(angular_speed)
     else:
@@ -224,23 +224,23 @@ def home():
     delta_y = 0-y
     delta_x = 0-x
     # calcul la distance a parcourir par pythagore
-    # la position de depart est 0,0 et la position actuel est x,y
+    # la position de depart est 0,0 et la position actuelle est x,y
     desired_distance = abs(math.sqrt((x ** 2) + (y ** 2))) 
 
-    # on doit visualiser la grille spacial du drone comme le cercle trigonometrique
+    # on doit visualiser la grille spatiale du drone comme le cercle trigonometrique
     # le drone se trouve dans le premier quadrant
     if (x < 0 and y < 0):
-        # calcule l'angle a tourner
-        # l'angle obtenu est en dregre
+        # calcule l'angle de rotation
+        # l'angle obtenu est en degré
         desired_angle = math.asin(delta_y/desired_distance)
         
     # drone se trouve dans le deuxieme quadrant
     elif (x < 0 and y > 0):
-        # calcule l'angle a tourner
-        # l'angle obtenu est en dregre
+        # calcule l'angle de rotation
+        # l'angle obtenu est en degré
         desired_angle = math.asin(delta_y/desired_distance)
 
-    # droen se toruve dans le 4 quadrant
+    # droen se toruve dans le 4eme quadrant
     elif (x > 0 and y < 0):
         angle = math.asin(delta_y/desired_distance)
         desired_angle = 180 - angle
@@ -262,11 +262,11 @@ def home():
     elif (y == 0 and x < 0):
         desired_angle = 0
 
-    # droen se trouve deja a la base
+    # drone se trouve deja a la base
     else: 
         print("you are allready at base")
 
-    # si le drone n est pas a la base on appelle des fonction de deplacement
+    # si le drone n est pas a la base on appelle des fonctions de deplacement
     if (x !=0 and y != 0):
         relative_angle = desired_angle - yaw
 
