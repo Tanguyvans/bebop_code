@@ -106,10 +106,10 @@ def descendre_background():
     t = threading.Thread(target= bebop_control.moveZ(vitesse, distance, False))
     t.start()
 def rotationgauche_background():
-    t = threading.Thread(target= 'rg')
+    t = threading.Thread(target= bebop_control.rotate(10, 65, True))
     t.start()    
 def rotationdroite_background():
-    t = threading.Thread(target= 'rd')
+    t = threading.Thread(target= bebop_control.rotate(10, 65, False))
     t.start()
     
 
@@ -169,9 +169,10 @@ if __name__ == '__main__':
         tracking_button = Button(window, text="Tracking", height= "3", width="20", command = tracking_background).place(x=800,y=300)
         stop_tracking_button = Button(window, text="Stop Tracking", height= "3", width="20", command = stop_tracking_background).place(x=800,y=380)
         
-        camera_button = Button(window, text= "Démarrer enregistrement", height = "3", width= "20", command = camera_background).place(x=30, y= 200)
-        stop_camera_button = Button(window, text= "Stop enregistrement", height = "3", width= "20", command = stop_camera_background).place(x=30, y= 250)
-        move_button = Button(window, text= "BASE", height = "3", width= "20", command = stop_camera_background).place(x=30, y= 300)
+        move_button = Button(window, text= "BASE", height = "3", width= "20", command = move_background).place(x=30, y= 300)
+        
+        cam_button = Button(window, text= "camera", height = "3", width= "20", command = camera_background).place(x=30, y= 350)
+        stop_cam_button = Button(window, text= "stop cam", height = "3", width= "20", command = stop_camera_background).place(x=30, y= 400)
         
         
         rotationgauche_button= Button(window, text= "Rotation gauche", height="3", width= "20", command= rotationgauche_background).place(x=800, y=450)
