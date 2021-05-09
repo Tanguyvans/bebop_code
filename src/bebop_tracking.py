@@ -58,8 +58,6 @@ def Bounding_Callback(msg):
     #print(objType)
     #print('in bounding callback')
 
-    print(width, height)
-
     global width 
     global height 
 
@@ -80,9 +78,8 @@ def Bounding_Callback(msg):
     # On recupere l'ensemble des personnes avec leurs positions 
     for box in msg.bounding_boxes:
         if (box.Class == objType):
-            #rospy.loginfo(box.Class)
-            #rospy.loginfo("Xmin {} Xmax {} Ymin {} Ymax {}".format(box.xmin, box.xmax, box.ymin, box.ymax))
-
+            
+            print (objType)
             listPosition.append(box.xmax) 
             listPosition.append(box.xmin) 
             listPosition.append(box.ymax)
@@ -168,7 +165,7 @@ def Bounding_Callback(msg):
         else:
             velocity_message.linear.z = 0
       
-        #velocity_publisher.publish(velocity_message)
+        velocity_publisher.publish(velocity_message)
 
             
 
@@ -191,4 +188,3 @@ def tracking(name):
     image_tracking = rospy.Subscriber(darknet_topic, BoundingBoxes, Bounding_Callback)
     #print('in the tracking')
     image_sub = rospy.Subscriber("/bebop/image_raw",Image, image_callback)
-    #rospy.spin()
