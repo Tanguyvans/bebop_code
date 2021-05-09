@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 #fichier qui reprend toutes les commandes pour contrôler le drone 
 
