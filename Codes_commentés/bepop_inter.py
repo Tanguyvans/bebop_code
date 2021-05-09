@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 #version du code commentée; 2 versions car parfois les commentaires dans le code pouvaient poser problème lors de l'exécution
 
