@@ -27,7 +27,6 @@ def land():
     time.sleep(4.)
 
 def image_callback(ros_image):
-  #print('Processing frame / Delay:%6.3f' % (rospy.Time.now() - ros_image.header.stamp).to_sec())
   global bridge
   #convert ros_image into an opencv-compatible image
   try:
@@ -35,6 +34,7 @@ def image_callback(ros_image):
   except CvBridgeError as e:
       print(e)
   #from now on, you can work exactly like with opencv
+
   (rows, cols, channels) = cv_image.shape
 
   #print ( rows/2, cols/2)
