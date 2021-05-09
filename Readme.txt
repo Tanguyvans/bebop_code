@@ -7,7 +7,7 @@ Dans codes nous avons:
 Si l'on souhaite lancer les codes sans avoir l'interface, nous avons:
 -bebop_yolo.py : code pour le tracking de personne uniquement 
 -bebop_fleche.py : code pour la detection de fleche 
--bebop_
+-bebop_motion.py : reprend l'ensemble des commandes manuel
 
 
 
