@@ -136,7 +136,7 @@ def getContours(imgCanny, img):
 
                         elif area > 2500:
                             print("Land")
-                            #land()
+                            land()
                          
                 else : 
                     min_x = 1000000000
@@ -243,6 +243,8 @@ def rotate (angular_speed_degree, relative_angle_degree, clockwise):
 
     velocity_message.angular.z =0
     velocity_publisher.publish(velocity_message)
+
+
 
 def arrow():
 
